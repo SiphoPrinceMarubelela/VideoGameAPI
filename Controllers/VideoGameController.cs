@@ -54,5 +54,37 @@ namespace VideoGameAPI.Controllers
             }
             return Ok(game);
         }
+
+        //add a new video game
+        [HttpPost]
+        public ActionResult<VideoGame> addVideoGame(VideoGame newGame)
+        {
+            if(newGame is null)
+                return BadRequest();
+            
+            newGame.Id = videoGames.Max(g => g.Id) + 1; // Assign a new ID
+            videoGames.Add(newGame);
+            return CreatedAtAction(nameof(GetVideGameById), new { Id = newGame.Id }, newGame);
+        }
+
+        //updating the state of a single game
+        [HttpPut("{Id}")]
+        public ActionResult UpdateVideoGame(int Id, VideoGame updatedGame)
+        {
+            var game = videoGames.FirstOrDefault(g => g.Id == Id);
+            if (game is null)
+            {
+                return NotFound();
+            }
+
+            game.Title = updatedGame.Title;
+            game.Publisher = updatedGame.Publisher;
+            game.Developer = updatedGame.Developer;
+            game.Platform = updatedGame.Platform;
+
+            return NoContent();
+        }
+
+
     }
 }
