@@ -32,5 +32,27 @@ namespace VideoGameAPI.Controllers
             }
 
         };
+
+        [HttpGet]
+        public ActionResult<List<VideoGame>> GetVideGames()
+        {
+            return Ok(videoGames);
+        }
+
+        //return a single entry of a video game
+        [HttpGet("{Id}")]
+        /*
+         [HttpGet]
+         [Route("{id}")]
+         */
+        public ActionResult<VideoGame> GetVideGameById(int Id)
+        { 
+            var game = videoGames.FirstOrDefault(g => g.Id == Id);
+            if(game is null)
+            {
+                return NotFound();
+            }
+            return Ok(game);
+        }
     }
 }
