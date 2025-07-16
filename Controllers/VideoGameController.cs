@@ -69,7 +69,7 @@ namespace VideoGameAPI.Controllers
 
         //updating the state of a single game
         [HttpPut("{Id}")]
-        public ActionResult UpdateVideoGame(int Id, VideoGame updatedGame)
+        public IActionResult UpdateVideoGame(int Id, VideoGame updatedGame)
         {
             var game = videoGames.FirstOrDefault(g => g.Id == Id);
             if (game is null)
@@ -81,6 +81,21 @@ namespace VideoGameAPI.Controllers
             game.Publisher = updatedGame.Publisher;
             game.Developer = updatedGame.Developer;
             game.Platform = updatedGame.Platform;
+
+            return NoContent();
+        }
+
+        //deleting a game of off our collection
+        [HttpDelete("{Id}")]
+        public IActionResult DeleteVideoGame(int Id)
+        {
+            var game = videoGames.FirstOrDefault(g => g.Id == Id);
+            if (game is null)
+            {
+                return NotFound();
+            }
+
+            videoGames.Remove(game);
 
             return NoContent();
         }
